@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     bio: String,
     phoneNumber: String,
     gender: String,
-    image: String,
+    image: String
 });
 
 const User = mongoose.model('User', userSchema);
