@@ -31,7 +31,7 @@ async function checkPassword({email, password}) {
 }
 
 async function createUser(userData) {
-    const {firstName, lastName, age, skillLevel, height, email, password, bio, phoneNumber, gender} = userData;
+    const {firstName, lastName, age, skillLevel, height, email, password, bio, phoneNumber, gender, image} = userData;
     const newUser = new User({
         firstName,
         lastName,
@@ -42,7 +42,8 @@ async function createUser(userData) {
         password,
         bio,
         phoneNumber,
-        gender
+        gender,
+        image,
     })
 
     newUser.save()
