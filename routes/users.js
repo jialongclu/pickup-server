@@ -19,6 +19,7 @@ router.get("/discover/:id", async function (req, res, next) {
   let users = await getUsers();
   let interactions = await getInteractions(id);
   let userList = [];
+  console.log(users)
   console.log(interactions);
 
   // const sanitizedUsers = users.filter((user) => {
@@ -34,15 +35,23 @@ router.get("/discover/:id", async function (req, res, next) {
   //   }
   // });
 
+  const removeUsers = new Set();
+
   for (const user of users) {
     for (const interaction of interactions) {
       console.log(user._id.toString(), interaction.userTwoId);
       if (
-        user._id.toString() !== id &&
-        user._id.toString() !== interaction.userTwoId
+        user._id.toString() === id || 
+        user._id.toString() === interaction.userTwoId
       ) {
-        userList.push(user);
+        removeUsers.add(user.id);
       }
+    }
+  }
+
+  for (const user of users) {
+    if (!removeUsers.has(user._id)) {
+      userList.push(user)
     }
   }
   // console.log(userList);
