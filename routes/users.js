@@ -47,7 +47,7 @@ router.get("/discover/:id", async function (req, res, next) {
   }
 
   for (const user of users) {
-    if (!removeUsers.has(user._id)) {
+    if (!removeUsers.has(user._id) && !(user._id.toString() === id)) {
       userList.push(user)
     }
   }
