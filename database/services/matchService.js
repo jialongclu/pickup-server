@@ -7,7 +7,7 @@ async function getMatches(userId) {
     userOneId: userId,
     swiped: true,
   });
-  console.log(userId);
+
   const usersLikedBy = await Interaction.find({
     userTwoId: userId,
     swiped: true,
@@ -48,10 +48,14 @@ async function getMatches(userId) {
     newMatchCreated.save();
   }
 
-  const currentMatches = await Match.find({ userOneId: userId });
+  // const currentMatches = await Match.find({ userOneId: userId });
+
   let userProfiles = [];
-  for (const currentMatch of currentMatches) {
-    userProfiles = await User.find({ _id: currentMatch.userTwoId });
+  for (const currentMatch of newMatches) {
+    userProfiles.push(await User.find({ _id: currentMatch.userTwoId }));
+  }
+  for (const currentMatch of potentialMatches) {
+    userProfiles.push(await User.find({ _id: currentMatch.userTwoId }));
   }
   return userProfiles;
 }
