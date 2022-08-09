@@ -51,16 +51,27 @@ async function getMatches(userId) {
   const currentMatches = await Match.find({ userOneId: userId });
   const otherMatches = await Match.find({ twoUserId: userId });
 
-  let userProfiles = [];
-  for (const currentMatch of currentMatches) {
-    userProfiles.concat(await User.find({ _id: currentMatch.userTwoId }));
+  let current = []
+  for (const currentMatch of potentialMatches) {
+    const resp = await User.find({ _id: currentMatch.userTwoId });
+    current.push(...resp)
   }
 
-  for (const currentMatch of otherMatches) {
-    userProfiles.concat(await User.find({ _id: currentMatch.userOneId }));
+  for (const currentMatch of newMatches) {
+    const resp = await User.find({ _id: currentMatch.userTwoId });
+    current.push(...resp)
   }
 
-  return userProfiles;
+  const removeDups = new Set();
+  current = current.filter((user) => {
+    if (removeDups.has(user._id.toString())) {
+      return false;
+    }
+    removeDups.add(user._id.toString());
+    return true;
+  })
+
+  return current;
 }
 
 module.exports = {
