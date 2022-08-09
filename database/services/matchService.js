@@ -48,15 +48,18 @@ async function getMatches(userId) {
     newMatchCreated.save();
   }
 
-  // const currentMatches = await Match.find({ userOneId: userId });
+  const currentMatches = await Match.find({ userOneId: userId });
+  const otherMatches = await Match.find({ twoUserId: userId });
 
   let userProfiles = [];
-  for (const currentMatch of newMatches) {
-    userProfiles.push(await User.find({ _id: currentMatch.userTwoId }));
+  for (const currentMatch of currentMatches) {
+    userProfiles.concat(await User.find({ _id: currentMatch.userTwoId }));
   }
-  for (const currentMatch of potentialMatches) {
-    userProfiles.push(await User.find({ _id: currentMatch.userTwoId }));
+
+  for (const currentMatch of otherMatches) {
+    userProfiles.concat(await User.find({ _id: currentMatch.userTwoId }));
   }
+
   return userProfiles;
 }
 
