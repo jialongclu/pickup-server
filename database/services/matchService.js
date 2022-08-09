@@ -57,7 +57,7 @@ async function getMatches(userId) {
   }
 
   for (const currentMatch of otherMatches) {
-    userProfiles.concat(await User.find({ _id: currentMatch.userTwoId }));
+    userProfiles.concat(await User.find({ _id: currentMatch.userOneId }));
   }
 
   return userProfiles;
