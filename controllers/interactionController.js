@@ -4,7 +4,7 @@ var router = express.Router();
 const {
   createInteraction,
   getInteractions,
-} = require("../database/services/interactionService");
+} = require("../services/interactionService");
 
 router.post("/", function (req, res, next) {
   const { userIdOne, userIdTwo, swiped } = req.body;
