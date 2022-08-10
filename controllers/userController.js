@@ -4,10 +4,8 @@ const {
   getUsers,
   editUserProfile,
   getUserProfile,
-} = require("../database/index.js");
-const {
-  getInteractions,
-} = require("../database/services/interactionService.js");
+} = require("../services/userService.js");
+const { getInteractions } = require("../services/interactionService.js");
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
@@ -19,26 +17,12 @@ router.get("/discover/:id", async function (req, res, next) {
   let users = await getUsers();
   let interactions = await getInteractions(id);
   let userList = [];
-  // const sanitizedUsers = users.filter((user) => {
-  //   if (interactions.length === 0) {
-  //     return user === user;
-  //   }
-  //   for (const interaction of interactions) {
-  //     console.log(interaction.userTwoId, user._id.toString(), id);
-  //     return (
-  //       interaction.userTwoId !== user._id.toString() &&
-  //       user._id.toString() !== id
-  //     );
-  //   }
-  // });
-
   const removeUsers = new Set();
 
   for (const user of users) {
     for (const interaction of interactions) {
-      console.log(user._id.toString(), interaction.userTwoId);
       if (
-        user._id.toString() === id || 
+        user._id.toString() === id ||
         user._id.toString() === interaction.userTwoId
       ) {
         removeUsers.add(user._id);
@@ -48,11 +32,9 @@ router.get("/discover/:id", async function (req, res, next) {
 
   for (const user of users) {
     if (!removeUsers.has(user._id) && !(user._id.toString() === id)) {
-      userList.push(user)
+      userList.push(user);
     }
   }
-  // console.log(userList);
-
   res.send(userList);
 });
 
